@@ -101,43 +101,56 @@ namespace Hada
 
         public Jugador(string nombre, int amonestaciones, int faltas, int energia, int puntos)
         {
-            this.nombre = nombre; this.amonestaciones = amonestaciones; this.faltas = faltas; this.energia = energia; this.puntos = puntos;
+            this.nombre = nombre; 
+            this.amonestaciones = amonestaciones; 
+            this.faltas = faltas; this.energia = energia; 
+            this.puntos = puntos;
         }
 
         void incAmonestaciones()
         {
-
+            amonestaciones += rand.Next(0, 3);
         }
 
         void incFaltas()
         {
-
+            faltas += rand.Next(0, 4);
         }
 
         void decEnergia()
         {
-
+            energia -= rand.Next(1, 8);
         }
 
         void incPuntos()
         {
-
+            puntos += rand.Next(0, 4);
         }
 
         bool todoOk()
         {
-
+            if (amonestaciones <= maxAmonestaciones && energia >= minEnergia && faltas <= maxFaltas) return true;
+            return false;
         }
 
         void mover()
         {
-
+            if (todoOk())
+            {
+                incAmonestaciones();
+                incFaltas();
+                incPuntos();
+                decEnergia();
+            }
         }
 
-        override
+        
+        override 
         string ToString()
         {
-
+            string s = "";
+            s += $"[{nombre}] Puntos: {puntos}; Amonestaciones: {amonestaciones}; Faltas: {faltas}; Energía: {energia} %; Ok: {todoOk()}";
+            return s;
         }
 
         event EventHandler<AmonestacionesMaximoExcedidoArgs> amonestacionesMaximoExcedido
