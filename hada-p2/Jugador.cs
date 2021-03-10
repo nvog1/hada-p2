@@ -107,33 +107,33 @@ namespace Hada
             this.puntos = puntos;
         }
 
-        void incAmonestaciones()
+        public void incAmonestaciones()
         {
             amonestaciones += rand.Next(0, 3);
         }
 
-        void incFaltas()
+        public void incFaltas()
         {
             faltas += rand.Next(0, 4);
         }
 
-        void decEnergia()
+        public void decEnergia()
         {
             energia -= rand.Next(1, 8);
         }
 
-        void incPuntos()
+        public void incPuntos()
         {
             puntos += rand.Next(0, 4);
         }
 
-        bool todoOk()
+        public bool todoOk()
         {
             if (amonestaciones <= maxAmonestaciones && energia >= minEnergia && faltas <= maxFaltas) return true;
             return false;
         }
 
-        void mover()
+        public void mover()
         {
             if (todoOk())
             {
@@ -144,26 +144,22 @@ namespace Hada
             }
         }
 
-        
-        override 
-        string ToString()
+        public override string ToString()
         {
-            string s = "";
-            s += $"[{nombre}] Puntos: {puntos}; Amonestaciones: {amonestaciones}; Faltas: {faltas}; Energía: {energia} %; Ok: {todoOk()}";
-            return s;
+            return $"[{nombre}] Puntos: {puntos}; Amonestaciones: {amonestaciones}; Faltas: {faltas}; Energía: {energia} %; Ok: {todoOk()}";
         }
 
-        event EventHandler<AmonestacionesMaximoExcedidoArgs> amonestacionesMaximoExcedido
+        public event EventHandler<AmonestacionesMaximoExcedidoArgs> amonestacionesMaximoExcedido
         {
 
         }
 
-        event EventHandler<FaltasMaximoExcedidoArgs> faltasMaximoExcedido
+        public event EventHandler<FaltasMaximoExcedidoArgs> faltasMaximoExcedido
         {
 
         }
 
-        event EventHandler<EnergiaMinimaExcedidaArgs> energiaMinimaExcedida
+        public event EventHandler<EnergiaMinimaExcedidaArgs> energiaMinimaExcedida
         {
 
         }
