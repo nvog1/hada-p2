@@ -45,31 +45,67 @@ namespace Hada
 
         public void moverJugadoresEnBucle()
         {
+            while (jugadores.Count() > 0)
+            {
+                moverJugadores();
+            }
         }
 
         public int sumarPuntos()
         {
+            int sumaPuntos = 0;
 
+            for (int i = 0; i < jugadores.Count(); i++)
+            {
+                sumaPuntos += jugadores[i].puntos;
+            }
+
+            for (int i = 0; i < jugadoresExpulsados.Count(); i++)
+            {
+                sumaPuntos += jugadores[i].puntos;
+            }
+
+            for (int i = 0; i < jugadoresLesionados.Count(); i++)
+            {
+                sumaPuntos += jugadoresLesionados[i].puntos;
+            }
+
+            for (int i = 0; i < jugadoresRetirados.Count(); i++)
+            {
+                sumaPuntos += jugadoresRetirados[i].puntos;
+            }
+
+            return sumaPuntos;
         }
 
         public List<Jugador> getJugadoresExcedenLimiteAmonestaciones()
         {
-
+            return jugadoresExpulsados;
         }
 
         public List<Jugador> getJugadoresExcedenLimiteFaltas()
         {
-
+            return jugadoresLesionados;
         }
 
         public List<Jugador> getJugadoresExcedenMinimoEnergia()
         {
-
+            return jugadoresRetirados;
         }
 
         public override string ToString()
         {
-            return base.ToString();//rehacer. esto es lo que viene por defecto
+            string s = "";
+            s += $"[{nombreEquipo}] Puntos: {sumarPuntos()}; Expulsados: {jugadoresExpulsados.Count()}; Lesionados: {jugadoresLesionados.Count()}; Retirados: {jugadoresRetirados.Count()}";
+            
+            for(int i = 0; i < jugadores.Count(); i++)
+            {
+                s += jugadores[i].ToString();
+            }
+
+            //hacer también para las otras listas de jugadores
+
+            return s;
         }
 
         private void cuandoAmonestacionesMaximoExcedido(/*args*/)
