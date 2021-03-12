@@ -51,12 +51,12 @@ namespace Hada
             get { return _amonestaciones; }
             set
             {
-
+                if (value < 0) _amonestaciones = 0;
+                _amonestaciones = value;
                 if (value > maxAmonestaciones && amonestacionesMaximoExcedido != null)
                 {
                     amonestacionesMaximoExcedido(this, new AmonestacionesMaximoExcedidoArgs(value));
                 }
-                else if (value < 0) _amonestaciones = 0;
             }
         }
 
@@ -65,12 +65,12 @@ namespace Hada
         {
             get { return _faltas; }
             set 
-            { 
+            {
+                _faltas = value;
                 if (value > maxFaltas && faltasMaximoExcedido != null)
                 {
                     faltasMaximoExcedido(this, new FaltasMaximoExcedidoArgs(value));
                 }
-                _faltas = value;
             }
         }
 
@@ -81,7 +81,8 @@ namespace Hada
             set
             {
                 if (value > 100) _energia = 100;
-                else if (value < 0) _energia = 0;
+                if (value < 0) _energia = 0;
+                _energia = value;
 
                 if (value < minEnergia && energiaMinimaExcedida != null)
                 {
@@ -94,7 +95,8 @@ namespace Hada
         {
             this.nombre = nombre; 
             this.amonestaciones = amonestaciones; 
-            this.faltas = faltas; this.energia = energia; 
+            this.faltas = faltas;
+            this.energia = energia; 
             this.puntos = puntos;
         }
 

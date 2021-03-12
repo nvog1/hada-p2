@@ -20,6 +20,11 @@ namespace Hada
         public Equipo(int nj, string nom)
         {
             nombreEquipo = nom;
+            jugadores = new List<Jugador>();
+            jugadoresExpulsados = new List<Jugador>();
+            jugadoresLesionados = new List<Jugador>();
+            jugadoresRetirados = new List<Jugador>();
+
             for(int i = 0; i < nj; i++)
             {
                 Jugador jugadorAux = new Jugador("Jugador_" + i.ToString(), 0, 0, 50, 0);
