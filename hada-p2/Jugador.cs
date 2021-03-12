@@ -70,7 +70,7 @@ namespace Hada
         public int puntos { get; set; }
 
         private int _amonestaciones;
-        public int amonestaciones
+        private int amonestaciones
         {
             get { return _amonestaciones; }
             set
@@ -81,14 +81,14 @@ namespace Hada
         }
 
         private int _faltas;
-        public int faltas
+        private int faltas
         {
             get { return _faltas; }
             set { if (value > maxFaltas) /*lanzar evento faltasMaximoExcedido*/; }
         }
 
         private int _energia;
-        public int energia
+        private int energia
         {
             get { return _energia; }
             set
