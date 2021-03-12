@@ -64,10 +64,13 @@ namespace Hada
         private int faltas
         {
             get { return _faltas; }
-            set { if (value > maxFaltas && faltasMaximoExcedido != null)
+            set 
+            { 
+                if (value > maxFaltas && faltasMaximoExcedido != null)
                 {
                     faltasMaximoExcedido(this, new FaltasMaximoExcedidoArgs(value));
                 }
+                _faltas = value;
             }
         }
 
