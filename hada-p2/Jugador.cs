@@ -6,17 +6,9 @@ using System.Threading.Tasks;
 
 namespace Hada
 {
-    class AmonestacionesMaximoExcedidoArgs
+    public class AmonestacionesMaximoExcedidoArgs : EventArgs
     {
-        private int _amonestaciones;
-        public int amonestaciones
-        {
-            get { return _amonestaciones; }
-            set
-            {
-                _amonestaciones = value;
-            }
-        }
+        public int amonestaciones { get; set; }
         
         public AmonestacionesMaximoExcedidoArgs(int amonestaciones)
         {
@@ -24,17 +16,9 @@ namespace Hada
         }
     }
 
-    class FaltasMaximoExcedidoArgs
+    public class FaltasMaximoExcedidoArgs : EventArgs
     {
-        private int _faltas;
-        public int faltas
-        {
-            get { return _faltas; }
-            set
-            {
-                _faltas = value;
-            }
-        }
+        public int faltas { get; set; }
 
         public FaltasMaximoExcedidoArgs(int faltas)
         {
@@ -42,17 +26,9 @@ namespace Hada
         }
     }
 
-    class EnergiaMinimaExcedidaArgs
+    public class EnergiaMinimaExcedidaArgs: EventArgs
     {
-        private int _energia;
-        public int energia
-        {
-            get { return _energia; }
-            set
-            {
-                _energia = value;
-            }
-        }
+        public int energia { get; set; }
 
         public EnergiaMinimaExcedidaArgs(int energia)
         {
@@ -75,7 +51,11 @@ namespace Hada
             get { return _amonestaciones; }
             set
             {
-                if (value > maxFaltas) ; //lanzar evento amonestacionesMaximoExcedido
+
+                if (value > maxAmonestaciones && amonestacionesMaximoExcedido != null)
+                {
+                    amonestacionesMaximoExcedido(this, new AmonestacionesMaximoExcedidoArgs(value));
+                }
                 else if (value < 0) _amonestaciones = 0;
             }
         }
@@ -84,7 +64,11 @@ namespace Hada
         private int faltas
         {
             get { return _faltas; }
-            set { if (value > maxFaltas) /*lanzar evento faltasMaximoExcedido*/; }
+            set { if (value > maxFaltas && faltasMaximoExcedido != null)
+                {
+                    faltasMaximoExcedido(this, new FaltasMaximoExcedidoArgs(value));
+                }
+            }
         }
 
         private int _energia;
@@ -93,9 +77,13 @@ namespace Hada
             get { return _energia; }
             set
             {
-                if (value < minEnergia) /*lanzar evento energiaMinimaExcedida*/;
                 if (value > 100) _energia = 100;
                 else if (value < 0) _energia = 0;
+
+                if (value < minEnergia && energiaMinimaExcedida != null)
+                {
+                    energiaMinimaExcedida(this, new EnergiaMinimaExcedidaArgs(value));
+                }
             }
         }
 
@@ -149,20 +137,10 @@ namespace Hada
             return $"[{nombre}] Puntos: {puntos}; Amonestaciones: {amonestaciones}; Faltas: {faltas}; Energía: {energia} %; Ok: {todoOk()}";
         }
 
-        public event EventHandler<AmonestacionesMaximoExcedidoArgs> amonestacionesMaximoExcedido
-        {
+        public event EventHandler<AmonestacionesMaximoExcedidoArgs> amonestacionesMaximoExcedido;
 
-        }
+        public event EventHandler<FaltasMaximoExcedidoArgs> faltasMaximoExcedido;
 
-        public event EventHandler<FaltasMaximoExcedidoArgs> faltasMaximoExcedido
-        {
-
-        }
-
-        public event EventHandler<EnergiaMinimaExcedidaArgs> energiaMinimaExcedida
-        {
-
-        }
-
+        public event EventHandler<EnergiaMinimaExcedidaArgs> energiaMinimaExcedida;
     }
 }
