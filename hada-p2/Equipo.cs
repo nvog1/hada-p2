@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Hada
 {
+    /// <summary>
+    /// Esta clase contiene un equipo formado por jugadores de la clase Hada.Jugador
+    /// </summary>
     class Equipo
     {
         public static int minJugadores { get; set; }
@@ -17,6 +20,11 @@ namespace Hada
         private List<Jugador> jugadoresLesionados { get; set; }
         private List<Jugador> jugadoresRetirados { get; set; }
 
+        /// <summary>
+        /// Constructor de la clase.
+        /// </summary>
+        /// <param name="nj">Número de jugadores del equipo.</param>
+        /// <param name="nom">Nombre del equipo.</param>
         public Equipo(int nj, string nom)
         {
             nombreEquipo = nom;
@@ -35,6 +43,10 @@ namespace Hada
             }
         }
 
+        /// <summary>
+        /// Mueve los jugadores que aún se puedan mover.
+        /// </summary>
+        /// <returns>True si después de haber movido aún quedan como mínimo minJugadores disponibles. False en caso contrario.</returns>
         public bool moverJugadores()
         {
             int jugadoresOk = 0; //jugadores que aun pueden jugar despues de este movimiento
@@ -57,11 +69,18 @@ namespace Hada
             else return false;
         }
 
+        /// <summary>
+        /// Mueve los jugadores mientras se puedan mover.
+        /// </summary>
         public void moverJugadoresEnBucle()
         {
             while (moverJugadores()) ;
         }
 
+        /// <summary>
+        /// Suma los puntos del equipo.
+        /// </summary>
+        /// <returns>Int con la suma de los puntos de todos los jugadores.</returns>
         public int sumarPuntos()
         {
             int sumaPuntos = 0;
@@ -102,6 +121,11 @@ namespace Hada
             return s;
         }
 
+        /// <summary>
+        /// Subscriber del evento AmonestacionesMaximoExcedido de la clase Hada.Jugador
+        /// </summary>
+        /// <param name="sender">Jugador que ha sido expulsado</param>
+        /// <param name="args">Numero de amonestaciones del jugador</param>
         private void cuandoAmonestacionesMaximoExcedido(object sender, AmonestacionesMaximoExcedidoArgs args)
         {
             Jugador j = (Hada.Jugador)sender;
@@ -112,6 +136,11 @@ namespace Hada
             Console.WriteLine("Amonestaciones: " + args.amonestaciones.ToString());
         }
 
+        /// <summary>
+        /// Subscriber del evento FaltasMaximoExcedido
+        /// </summary>
+        /// <param name="sender">Jugador que se ha lesionado</param>
+        /// <param name="args">Numero de faltas recibidas por el jugador.</param>
         private void cuandoFaltasMaximoExcedido(object sender, FaltasMaximoExcedidoArgs args)
         {
             Jugador j = (Hada.Jugador)sender;
@@ -122,6 +151,11 @@ namespace Hada
             Console.WriteLine("Faltas: " + args.faltas);
         }
 
+        /// <summary>
+        /// Subscriber del evento EnergiaMinimaExcedida
+        /// </summary>
+        /// <param name="sender">Jugador que se ha cansado</param>
+        /// <param name="args">Cantidad de energía restante del jugador.</param>
         private void cuandoEnergiaMinimaExcedida(object sender, EnergiaMinimaExcedidaArgs args)
         {
             Jugador j = (Hada.Jugador)sender;

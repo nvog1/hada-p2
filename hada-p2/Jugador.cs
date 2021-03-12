@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Hada
 {
+    /// <summary>
+    /// Clase usada para pasar las amonestaciones como argumento del evento AmonestacionesMaximoArgs
+    /// </summary>
     public class AmonestacionesMaximoExcedidoArgs : EventArgs
     {
         public int amonestaciones { get; set; }
@@ -16,6 +19,9 @@ namespace Hada
         }
     }
 
+    /// <summary>
+    /// Clase usada para pasar las faltas como argumento del evento FaltasMaximoArgs
+    /// </summary>
     public class FaltasMaximoExcedidoArgs : EventArgs
     {
         public int faltas { get; set; }
@@ -26,6 +32,9 @@ namespace Hada
         }
     }
 
+    /// <summary>
+    /// Clase usada para pasar la energia como argumento del evento EnergiaMinimaExcedida
+    /// </summary>
     public class EnergiaMinimaExcedidaArgs: EventArgs
     {
         public int energia { get; set; }
@@ -36,6 +45,9 @@ namespace Hada
         }
     }
 
+    /// <summary>
+    /// Jugadores del partido. Tienen nombre, amonestaciones, faltas recibidas, energia y puntos.
+    /// </summary>
     class Jugador
     {
         public static int maxAmonestaciones { get; set; }
@@ -91,6 +103,14 @@ namespace Hada
             }
         }
 
+        /// <summary>
+        /// Constructor de la clase
+        /// </summary>
+        /// <param name="nombre">Nombre del jugador</param>
+        /// <param name="amonestaciones">Amonestaciones del jugador</param>
+        /// <param name="faltas">Faltas recibidas por el jugador</param>
+        /// <param name="energia">Energía del jugador</param>
+        /// <param name="puntos">Puntos del jugador</param>
         public Jugador(string nombre, int amonestaciones, int faltas, int energia, int puntos)
         {
             this.nombre = nombre; 
@@ -100,32 +120,51 @@ namespace Hada
             this.puntos = puntos;
         }
 
+        /// <summary>
+        /// Incrementa entre 0 y 2 la cantidad de amonestaciones
+        /// </summary>
         public void incAmonestaciones()
         {
             amonestaciones += rand.Next(0, 3);
         }
 
+        /// <summary>
+        /// Incrementa entre 0 y 3 el numero de faltas
+        /// </summary>
         public void incFaltas()
         {
             faltas += rand.Next(0, 4);
         }
 
+        /// <summary>
+        /// Decrementa la energía entre 1 y 7 puntos
+        /// </summary>
         public void decEnergia()
         {
             energia -= rand.Next(1, 8);
         }
 
+        /// <summary>
+        /// Incrementa entre 0 y 3 los puntos del jugador
+        /// </summary>
         public void incPuntos()
         {
             puntos += rand.Next(0, 4);
         }
 
+        /// <summary>
+        /// Comprueba que el jugador puede seguir jugando
+        /// </summary>
+        /// <returns>True si no se ha retirado ni le han expulsado ni se ha lesionado. False en caso contrario.</returns>
         public bool todoOk()
         {
             if (amonestaciones <= maxAmonestaciones && energia >= minEnergia && faltas <= maxFaltas) return true;
             return false;
         }
 
+        /// <summary>
+        /// Mueve el jugador. LLama a incAmonestaciones(), incFaltas(), incPuntos() y decEnergia().
+        /// </summary>
         public void mover()
         {
             if (todoOk())
