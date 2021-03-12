@@ -134,7 +134,7 @@ namespace Hada
 
         public override string ToString()
         {
-            return $"[{nombre}] Puntos: {puntos}; Amonestaciones: {amonestaciones}; Faltas: {faltas}; Energía: {energia} %; Ok: {todoOk()}";
+            return $"[{nombre}] Puntos: {puntos}; Amonestaciones: {amonestaciones}; Faltas: {faltas}; Energía: {energia} %; Ok: {todoOk().ToString()}";
         }
 
         public event EventHandler<AmonestacionesMaximoExcedidoArgs> amonestacionesMaximoExcedido;

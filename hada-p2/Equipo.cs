@@ -20,23 +20,32 @@ namespace Hada
         public Equipo(int nj, string nom)
         {
             nombreEquipo = nom;
-            for(int i = 1; i <= nj; i++)
+            for(int i = 0; i < nj; i++)
             {
                 Jugador jugadorAux = new Jugador("Jugador_" + i.ToString(), 0, 0, 50, 0);
+                jugadorAux.amonestacionesMaximoExcedido += cuandoAmonestacionesMaximoExcedido;
+                jugadorAux.energiaMinimaExcedida += cuandoEnergiaMinimaExcedida;
+                jugadorAux.faltasMaximoExcedido += cuandoFaltasMaximoExcedido;
                 jugadores.Add(jugadorAux);
             }
         }
 
         public bool moverJugadores()
         {
+            int jugadoresOk = 0; //jugadores que aun pueden jugar despues de este movimiento
+            
             for (int i = 0; i < jugadores.Count(); i++)
             {
-                jugadores[i].mover();
+                if (jugadores[i].todoOk())
+                {
+                    jugadores[i].mover();
+                    if (jugadores[i].todoOk()) jugadoresOk++;
+                }
             }
 
             movimientos++;
 
-            if (jugadores.Count() >= minJugadores)
+            if (jugadoresOk >= minJugadores)
             {
                 return true;
             }
@@ -45,10 +54,7 @@ namespace Hada
 
         public void moverJugadoresEnBucle()
         {
-            while (jugadores.Count() > 0)
-            {
-                moverJugadores();
-            }
+            while (moverJugadores()) ;
         }
 
         public int sumarPuntos()
@@ -58,21 +64,6 @@ namespace Hada
             for (int i = 0; i < jugadores.Count(); i++)
             {
                 sumaPuntos += jugadores[i].puntos;
-            }
-
-            for (int i = 0; i < jugadoresExpulsados.Count(); i++)
-            {
-                sumaPuntos += jugadores[i].puntos;
-            }
-
-            for (int i = 0; i < jugadoresLesionados.Count(); i++)
-            {
-                sumaPuntos += jugadoresLesionados[i].puntos;
-            }
-
-            for (int i = 0; i < jugadoresRetirados.Count(); i++)
-            {
-                sumaPuntos += jugadoresRetirados[i].puntos;
             }
 
             return sumaPuntos;
@@ -96,29 +87,44 @@ namespace Hada
         public override string ToString()
         {
             string s = "";
-            s += $"[{nombreEquipo}] Puntos: {sumarPuntos()}; Expulsados: {jugadoresExpulsados.Count()}; Lesionados: {jugadoresLesionados.Count()}; Retirados: {jugadoresRetirados.Count()}";
+            s += $"[{nombreEquipo}] Puntos: {sumarPuntos()}; Expulsados: {jugadoresExpulsados.Count()}; Lesionados: {jugadoresLesionados.Count()}; Retirados: {jugadoresRetirados.Count()}\n";
             
             for(int i = 0; i < jugadores.Count(); i++)
             {
-                s += jugadores[i].ToString();
+                s += jugadores[i].ToString() + "\n";
             }
-
-            //hacer también para las otras listas de jugadores
 
             return s;
         }
 
-        private void cuandoAmonestacionesMaximoExcedido(/*args*/)
+        private void cuandoAmonestacionesMaximoExcedido(object sender, AmonestacionesMaximoExcedidoArgs args)
         {
+            Jugador j = (Hada.Jugador)sender;
+            jugadoresExpulsados.Add(j);
+            Console.WriteLine("¡¡Número máximo excedido de amonestaciones. Jugador expulsado!!");
+            Console.WriteLine("Jugador: " + j.nombre);
+            Console.WriteLine("Equipo: " + nombreEquipo);
+            Console.WriteLine("Amonestaciones: " + args.amonestaciones.ToString());
         }
 
-        private void cuandoFaltasMaximoExcedido(/*args*/)
+        private void cuandoFaltasMaximoExcedido(object sender, FaltasMaximoExcedidoArgs args)
         {
+            Jugador j = (Hada.Jugador)sender;
+            jugadoresLesionados.Add(j);
+            Console.WriteLine("¡¡Número máximo excedido de faltas recibidas. Jugador lesionado!!");
+            Console.WriteLine("Jugador: " + j.nombre);
+            Console.WriteLine("Equipo: " + nombreEquipo);
+            Console.WriteLine("Faltas: " + args.faltas);
         }
 
-        private void cuandoEnergiaMinimaExcedida(/*args*/)
+        private void cuandoEnergiaMinimaExcedida(object sender, EnergiaMinimaExcedidaArgs args)
         {
-
+            Jugador j = (Hada.Jugador)sender;
+            jugadoresRetirados.Add(j);
+            Console.WriteLine("¡¡Energía mínima excedida. Jugador retirado!!");
+            Console.WriteLine("Jugador: " + j.nombre);
+            Console.WriteLine("Equipo: " + nombreEquipo);
+            Console.WriteLine("Energía: " + args.energia.ToString() + " %");
         } 
 
 
